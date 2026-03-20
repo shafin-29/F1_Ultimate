@@ -1,4 +1,4 @@
-#F1 Ultimate
+# F1 Ultimate
 
 This is a Next.js project bootstrapped with `create-next-app`.
 
