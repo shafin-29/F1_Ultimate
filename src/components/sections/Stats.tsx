@@ -18,7 +18,7 @@ export default function Stats() {
   });
 
   return (
-    <section ref={containerRef} className="py-40 bg-f1-carbon relative border-y border-white/5">
+    <section id="performance" ref={containerRef} className="py-40 bg-f1-carbon relative border-y border-white/5">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-24">
           {stats.map((stat, i) => (
