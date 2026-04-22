@@ -14,8 +14,34 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "F1 | Precision. Speed. Engineering.",
-  description: "A luxury performance-driven experience showcasing the pinnacle of automotive engineering.",
+  title: "F1 Ultimate | Precision. Speed. Engineering.",
+  description: "Experience the pinnacle of automotive engineering and racing excellence with F1 Ultimate. Explore aerodynamic mastery, power units, and kinetic physics.",
+  icons: {
+    icon: "/favicon.jpg",
+    apple: "/favicon.jpg",
+  },
+  openGraph: {
+    title: "F1 Ultimate | Precision. Speed. Engineering.",
+    description: "Experience the pinnacle of automotive engineering and racing excellence with F1 Ultimate. Explore aerodynamic mastery, power units, and kinetic physics.",
+    url: "https://f1-ultimate.com",
+    siteName: "F1 Ultimate",
+    images: [
+      {
+        url: "/favicon.jpg",
+        width: 1200,
+        height: 630,
+        alt: "F1 Ultimate Car Showcase",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "F1 Ultimate | Precision. Speed. Engineering.",
+    description: "Experience the pinnacle of automotive engineering and racing excellence with F1 Ultimate.",
+    images: ["/favicon.jpg"],
+  },
 };
 
 export default function RootLayout({

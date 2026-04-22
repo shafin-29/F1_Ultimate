@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Twitter, Instagram, Youtube, Github } from "lucide-react";
+import { Twitter, Github } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -19,8 +19,11 @@ export default function Footer() {
               The pinnacle of automotive engineering and racing excellence. Driven by precision, fueled by passion, and dedicated to the art of speed.
             </p>
             <div className="flex gap-6">
-              {[Twitter, Instagram, Youtube, Github].map((Icon, i) => (
-                <a key={i} href="#" className="text-f1-silver/20 hover:text-f1-red transition-colors">
+              {[
+                { Icon: Twitter, href: "https://x.com/_Shafin_29" },
+                { Icon: Github, href: "https://github.com/shafin-29" }
+              ].map(({ Icon, href }, i) => (
+                <a key={i} href={href} target="_blank" rel="noopener noreferrer" className="text-f1-silver/20 hover:text-f1-red transition-colors">
                   <Icon size={20} />
                 </a>
               ))}
@@ -30,9 +33,30 @@ export default function Footer() {
           <div>
             <h4 className="text-xs font-black uppercase tracking-[0.3em] text-white mb-8">Navigation</h4>
             <ul className="space-y-4">
-              {["Performance", "Engineering", "Aerodynamics", "Legacy"].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-sm text-f1-silver/40 hover:text-white transition-colors">{item}</a>
+              {[
+                { name: "Home", href: "#" },
+                { name: "Design", href: "#design" },
+                { name: "Performance", href: "#performance" },
+                { name: "Engineering", href: "#engineering" },
+              ].map((link) => (
+                <li key={link.name}>
+                  <button 
+                    onClick={() => {
+                      if (link.href === "#") {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      } else {
+                        const targetId = link.href.substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        if (targetElement) {
+                          const y = targetElement.getBoundingClientRect().top + window.scrollY;
+                          window.scrollTo({ top: y, behavior: "smooth" });
+                        }
+                      }
+                    }}
+                    className="text-sm text-f1-silver/40 hover:text-white transition-colors cursor-pointer"
+                  >
+                    {link.name}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -43,7 +67,18 @@ export default function Footer() {
             <ul className="space-y-4">
               {["Power Unit", "Hybrid System", "Chassis", "Tyre Data"].map((item) => (
                 <li key={item}>
-                  <a href="#" className="text-sm text-f1-silver/40 hover:text-white transition-colors">{item}</a>
+                  <button 
+                    onClick={() => {
+                      const targetElement = document.getElementById("engineering");
+                      if (targetElement) {
+                        const y = targetElement.getBoundingClientRect().top + window.scrollY;
+                        window.scrollTo({ top: y, behavior: "smooth" });
+                      }
+                    }}
+                    className="text-sm text-f1-silver/40 hover:text-white transition-colors cursor-pointer"
+                  >
+                    {item}
+                  </button>
                 </li>
               ))}
             </ul>
