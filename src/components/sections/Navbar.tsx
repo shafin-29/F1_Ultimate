@@ -1,28 +1,45 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { cn } from "@/lib/utils";
-import MagneticButton from "@/components/ui/MagneticButton";
 
 const navLinks = [
+  { name: "Home", href: "#" },
+  { name: "Design", href: "#design" },
   { name: "Performance", href: "#performance" },
   { name: "Engineering", href: "#engineering" },
-  { name: "Aerodynamics", href: "#aero" },
-  { name: "Legacy", href: "#legacy" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const { scrollY } = useScroll();
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    
+    // Update scrolled state for background styling
+    setScrolled(latest > 50);
+
+    // Hide navbar if scrolling down and past a certain threshold
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
 
   return (
-    <nav className="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+    <motion.nav 
+      variants={{
+        visible: { y: 0 },
+        hidden: { y: "-100%" }
+      }}
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.35, ease: "easeInOut" }}
+      className="fixed top-0 inset-x-0 z-50"
+    >
       <div className={cn(
         "container mx-auto px-6 py-6 flex items-center justify-between transition-all",
         scrolled ? "py-4" : "py-8"
@@ -40,9 +57,20 @@ export default function Navbar() {
 
         <div className="hidden md:flex items-center gap-10">
           {navLinks.map((link, i) => (
-            <motion.a
+            <motion.button
               key={link.name}
-              href={link.href}
+              onClick={() => {
+                if (link.href === "#") {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                } else {
+                  const targetId = link.href.substring(1);
+                  const targetElement = document.getElementById(targetId);
+                  if (targetElement) {
+                    const y = targetElement.getBoundingClientRect().top + window.scrollY;
+                    window.scrollTo({ top: y, behavior: "smooth" });
+                  }
+                }
+              }}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
@@ -50,18 +78,11 @@ export default function Navbar() {
             >
               {link.name}
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-f1-red transition-all group-hover:w-full" />
-            </motion.a>
+            </motion.button>
           ))}
         </div>
 
-        <motion.div
-           initial={{ opacity: 0, x: 20 }}
-           animate={{ opacity: 1, x: 0 }}
-        >
-          <MagneticButton className="px-6 py-2.5">
-            Connect
-          </MagneticButton>
-        </motion.div>
+
       </div>
 
       {/* Glass Morphic Background for scrolled state */}
@@ -75,6 +96,6 @@ export default function Navbar() {
           />
         )}
       </AnimatePresence>
-    </nav>
+    </motion.nav>
   );
 }
